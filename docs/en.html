@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Test on Inheritance in Python</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .exercise, .output { background: #f4f4f4; padding: 10px; border-radius: 8px; margin-bottom: 20px; }
+    textarea { width: 100%; height: 150px; margin-top: 10px; }
+    button.run { margin-top: 10px; margin-right: 10px; }
+    pre.result { background: #222; color: #0f0; padding: 10px; border-radius: 8px; }
+    .check { color: blue; margin-top: 5px; font-weight: bold; }
+    .solution { display: none; background: #eef; padding: 10px; border-radius: 8px; margin-top: 5px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>🧠 Interactive Test: Multiple Inheritance in Python</h1>
+
+  <div class="exercise">
+    <p><strong>Exercise 1: Multiple Inheritance</strong></p>
+    <textarea id="code1">class Flyer:
+    def move(self):
+        print("Flying")
+
+class Walker:
+    def move(self):
+        print("Walking")
+
+class Bat(Flyer, Walker):
+    pass
+
+bat = Bat()
+bat.move()</textarea><br>
+    <button class="run" onclick="runCode('code1', 'out1', 'Flying\n')">▶ Run</button>
+    <button onclick="showSolution('sol1')">👁 Show solution</button>
+    <pre id="out1" class="result"></pre>
+    <div id="check1" class="check"></div>
+    <div id="sol1" class="solution">
+# Correct solution:
+class Flyer:
+    def move(self):
+        print("Flying")
+
+class Walker:
+    def move(self):
+        print("Walking")
+
+class Bat(Flyer, Walker):
+    pass
+
+bat = Bat()
+bat.move()</div>
+  </div>
+
+  <script>
+    function runCode(codeId, outputId, expectedOutput) {
+      const code = document.getElementById(codeId).value;
+      const output = document.getElementById(outputId);
+      const check = document.getElementById("check" + codeId.slice(-1));
+
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(`<!DOCTYPE html><html><body><script>
+        let result = '';
+        const log = console.log;
+        console.log = (msg) => { result += msg + '\n'; };
+        try { ${code} } catch(e) { result = 'Error: ' + e.message; }
+        parent.document.getElementById('${outputId}').textContent = result;
+        const ok = result === \`${expectedOutput}\`;
+        const feedback = ok ? '✅ Correct!' : '❌ Check output or logic.';
+        parent.document.getElementById('${"check" + codeId.slice(-1)}').textContent = feedback;
+      <\/script></body></html>`);
+      doc.close();
+    }
+
+    function showSolution(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
